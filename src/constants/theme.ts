@@ -1,65 +1,80 @@
-/**
- * Below are the colors that are used in the app. The colors are defined in the light and dark mode.
- * There are many other ways to style your app. For example, [Nativewind](https://www.nativewind.dev/), [Tamagui](https://tamagui.dev/), [unistyles](https://reactnativeunistyles.vercel.app), etc.
- */
-
-import '@/global.css';
-
-import { Platform } from 'react-native';
-
 export const Colors = {
-  light: {
-    text: '#000000',
-    background: '#ffffff',
-    backgroundElement: '#F0F0F3',
-    backgroundSelected: '#E0E1E6',
-    textSecondary: '#60646C',
-  },
-  dark: {
-    text: '#ffffff',
-    background: '#000000',
-    backgroundElement: '#212225',
-    backgroundSelected: '#2E3135',
-    textSecondary: '#B0B4BA',
-  },
-} as const;
-
-export type ThemeColor = keyof typeof Colors.light & keyof typeof Colors.dark;
-
-export const Fonts = Platform.select({
-  ios: {
-    /** iOS `UIFontDescriptorSystemDesignDefault` */
-    sans: 'system-ui',
-    /** iOS `UIFontDescriptorSystemDesignSerif` */
-    serif: 'ui-serif',
-    /** iOS `UIFontDescriptorSystemDesignRounded` */
-    rounded: 'ui-rounded',
-    /** iOS `UIFontDescriptorSystemDesignMonospaced` */
-    mono: 'ui-monospace',
-  },
-  default: {
-    sans: 'normal',
-    serif: 'serif',
-    rounded: 'normal',
-    mono: 'monospace',
-  },
-  web: {
-    sans: 'var(--font-display)',
-    serif: 'var(--font-serif)',
-    rounded: 'var(--font-rounded)',
-    mono: 'var(--font-mono)',
-  },
-});
+  primary: "#00342b",           // Deep Teal (High-emphasis actions)
+  primaryContainer: "#004d40",  // Forest Teal (Brand dominant)
+  secondary: "#3b6663",         // Soft Mint Accent
+  background: "#fcf9f8",        // Off-white / light cream
+  surface: "#ffffff",           // Card backgrounds
+  onPrimary: "#ffffff",
+  onSurface: "#1b1c1c",         // Text primary
+  onSurfaceVariant: "#3f4945",  // Text secondary
+  outline: "#3D4945",           // Border lines
+  outlineVariant: "#bfc9c4",    // Lighter outlines and placeholders
+  cardBorder: "#eeeeee",
+  muted: "#707975",
+  grayFixed: "#e5e2e1",
+};
 
 export const Spacing = {
-  half: 2,
-  one: 4,
-  two: 8,
-  three: 16,
-  four: 24,
-  five: 32,
-  six: 64,
-} as const;
+  xs: 8,
+  sm: 12,
+  md: 16,
+  lg: 24,
+  xl: 32,
+  xxl: 48,
+};
 
-export const BottomTabInset = Platform.select({ ios: 50, android: 80 }) ?? 0;
-export const MaxContentWidth = 800;
+export const Rounded = {
+  sm: 4,
+  default: 8,
+  md: 12,
+  lg: 16,
+  xl: 24,
+  full: 9999,
+};
+
+export const Typography = {
+  displayCurrency: {
+    fontFamily: "HankenGrotesk_700Bold",
+    fontSize: 40,
+    lineHeight: 48,
+    letterSpacing: -0.8, // -0.02em of 40
+  },
+  displayCurrencyMobile: {
+    fontFamily: "HankenGrotesk_700Bold",
+    fontSize: 32,
+    lineHeight: 40,
+    letterSpacing: -0.64,
+  },
+  headlineLg: {
+    fontFamily: "HankenGrotesk_600SemiBold",
+    fontSize: 24,
+    lineHeight: 32,
+  },
+  headlineMd: {
+    fontFamily: "HankenGrotesk_600SemiBold",
+    fontSize: 20,
+    lineHeight: 28,
+  },
+  bodyLg: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 16,
+    lineHeight: 24,
+  },
+  bodyMd: {
+    fontFamily: "Inter_400Regular",
+    fontSize: 14,
+    lineHeight: 20,
+  },
+  labelSm: {
+    fontFamily: "JetBrainsMono_500Medium",
+    fontSize: 12,
+    lineHeight: 16,
+    letterSpacing: 0.24, // 0.02em of 12
+  },
+  button: {
+    fontFamily: "Inter_600SemiBold",
+    fontSize: 14,
+    lineHeight: 20,
+    letterSpacing: 0.14,
+  },
+};
