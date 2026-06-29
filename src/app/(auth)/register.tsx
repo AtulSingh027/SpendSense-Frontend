@@ -1,13 +1,19 @@
-import React, { useState } from "react";
-import { View, StyleSheet, ScrollView, Alert, TouchableOpacity } from "react-native";
-import { useRouter } from "expo-router";
-import { MaterialIcons } from "@expo/vector-icons";
-import { Container } from "@/components/ui/container";
-import { Text } from "@/components/ui/text";
 import { Button } from "@/components/ui/button";
+import { Container } from "@/components/ui/container";
 import { Input } from "@/components/ui/input";
+import { Text } from "@/components/ui/text";
 import { Colors, Spacing } from "@/constants/theme";
 import { apiClient } from "@/lib/api";
+import { MaterialIcons } from "@expo/vector-icons";
+import { useRouter } from "expo-router";
+import { useState } from "react";
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 export default function RegisterScreen() {
   const router = useRouter();
@@ -34,7 +40,8 @@ export default function RegisterScreen() {
   };
 
   const handleRegister = async () => {
-    const { full_name, phone_number, email, password, confirm_password } = formData;
+    const { full_name, phone_number, email, password, confirm_password } =
+      formData;
 
     if (!full_name || !phone_number || !password || !confirm_password) {
       Alert.alert("Validation Error", "Please fill in all required fields.");
@@ -56,10 +63,10 @@ export default function RegisterScreen() {
         email,
       });
 
-      Alert.alert("Success", "Account created successfully!");
-      handleBack();
+      router.replace("/privacy-check");
     } catch (error: any) {
-      const errorMsg = error.response?.data?.detail || error.message || "An error occurred.";
+      const errorMsg =
+        error.response?.data?.detail || error.message || "An error occurred.";
       Alert.alert("Registration Failed", errorMsg);
     } finally {
       setIsLoading(false);
@@ -73,7 +80,11 @@ export default function RegisterScreen() {
         <TouchableOpacity style={styles.backButton} onPress={handleBack}>
           <MaterialIcons name="arrow-back" size={24} color={Colors.primary} />
         </TouchableOpacity>
-        <Text variant="headlineMd" color={Colors.primary} style={styles.headerTitle}>
+        <Text
+          variant="headlineMd"
+          color={Colors.primary}
+          style={styles.headerTitle}
+        >
           SpendSense
         </Text>
       </View>
@@ -88,7 +99,11 @@ export default function RegisterScreen() {
         <View style={styles.formWrapper}>
           {/* Title Section */}
           <View style={styles.titleContainer}>
-            <Text variant="headlineLg" color={Colors.onSurface} style={styles.title}>
+            <Text
+              variant="headlineLg"
+              color={Colors.onSurface}
+              style={styles.title}
+            >
               Create your account
             </Text>
             <Text variant="bodyMd" color={Colors.onSurfaceVariant}>
@@ -100,7 +115,11 @@ export default function RegisterScreen() {
           <View style={styles.formContainer}>
             {/* Full Name */}
             <View style={styles.inputGroup}>
-              <Text variant="labelSm" color={Colors.outline} style={styles.inputLabel}>
+              <Text
+                variant="labelSm"
+                color={Colors.outline}
+                style={styles.inputLabel}
+              >
                 Full Name
               </Text>
               <Input
@@ -114,7 +133,11 @@ export default function RegisterScreen() {
             {/* Phone Number */}
             <View style={styles.inputGroup}>
               <View style={styles.labelRow}>
-                <Text variant="labelSm" color={Colors.outline} style={styles.inputLabel}>
+                <Text
+                  variant="labelSm"
+                  color={Colors.outline}
+                  style={styles.inputLabel}
+                >
                   Phone Number
                 </Text>
                 <Text style={styles.requiredLabel}>REQUIRED</Text>
@@ -131,7 +154,11 @@ export default function RegisterScreen() {
             {/* Email */}
             <View style={styles.inputGroup}>
               <View style={styles.labelRow}>
-                <Text variant="labelSm" color={Colors.outline} style={styles.inputLabel}>
+                <Text
+                  variant="labelSm"
+                  color={Colors.outline}
+                  style={styles.inputLabel}
+                >
                   Email
                 </Text>
                 <Text style={styles.optionalLabel}>Optional</Text>
@@ -148,7 +175,11 @@ export default function RegisterScreen() {
 
             {/* Password */}
             <View style={styles.inputGroup}>
-              <Text variant="labelSm" color={Colors.outline} style={styles.inputLabel}>
+              <Text
+                variant="labelSm"
+                color={Colors.outline}
+                style={styles.inputLabel}
+              >
                 Password
               </Text>
               <Input
@@ -162,7 +193,11 @@ export default function RegisterScreen() {
 
             {/* Confirm Password */}
             <View style={styles.inputGroup}>
-              <Text variant="labelSm" color={Colors.outline} style={styles.inputLabel}>
+              <Text
+                variant="labelSm"
+                color={Colors.outline}
+                style={styles.inputLabel}
+              >
                 Confirm Password
               </Text>
               <Input
@@ -207,7 +242,11 @@ export default function RegisterScreen() {
               Already have an account?{" "}
             </Text>
             <TouchableOpacity onPress={handleBack}>
-              <Text variant="bodyMd" color={Colors.primary} style={styles.signInText}>
+              <Text
+                variant="bodyMd"
+                color={Colors.primary}
+                style={styles.signInText}
+              >
                 Sign In
               </Text>
             </TouchableOpacity>

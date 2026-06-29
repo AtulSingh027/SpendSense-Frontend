@@ -44,8 +44,7 @@ export default function LoginScreen() {
       const { access_token } = response.data;
       if (access_token) {
         await saveToken(access_token);
-        Alert.alert("Success", "Signed in successfully!");
-        handleBack();
+        router.replace("/privacy-check");
       } else {
         throw new Error("No access token returned from server.");
       }
