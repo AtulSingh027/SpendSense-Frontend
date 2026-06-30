@@ -1,5 +1,5 @@
 import React from "react";
-import { Text as RNText, TextProps, TextStyle, StyleSheet } from "react-native";
+import { Text as RNText, TextProps, TextStyle, StyleSheet, StyleProp } from "react-native";
 import { Typography, Colors } from "@/constants/theme";
 
 export type TypographyVariant =
@@ -16,6 +16,8 @@ interface CustomTextProps extends TextProps {
   variant?: TypographyVariant;
   color?: string;
   align?: "auto" | "left" | "right" | "center" | "justify";
+  children?: React.ReactNode;
+  style?: StyleProp<TextStyle>;
 }
 
 export function Text({

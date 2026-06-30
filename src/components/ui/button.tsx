@@ -15,6 +15,7 @@ interface ButtonProps extends TouchableOpacityProps {
   loading?: boolean;
   hasArrow?: boolean;
   style?: ViewStyle;
+  onPress?: () => void | Promise<void> | any;
 }
 
 export function Button({

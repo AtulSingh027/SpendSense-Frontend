@@ -39,17 +39,17 @@ export default function SMSPermissionScreen() {
           PermissionsAndroid.RESULTS.GRANTED;
 
         console.log("SMS Permission Status:", { readGranted, receiveGranted });
+        router.replace("/dashboard");
       } else {
-        // Alert on non-Android platforms since SMS reading is Android-only
+        // Alert on non-Android and wait for user acknowledgment before navigating
         Alert.alert(
           "Not Supported",
-          "SMS auto-import is only supported on Android devices."
+          "SMS auto-import is only supported on Android devices.",
+          [{ text: "OK", onPress: () => router.replace("/dashboard") }]
         );
       }
     } catch (err) {
       console.warn("Permission request error:", err);
-    } finally {
-      // Navigate to dashboard regardless of permission state
       router.replace("/dashboard");
     }
   };
