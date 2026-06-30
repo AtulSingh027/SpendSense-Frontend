@@ -5,6 +5,7 @@ import { Colors, Rounded, Spacing } from "@/constants/theme";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
 import React from "react";
+import { fetchAndSyncSMS } from "@/lib/sms";
 import {
   Alert,
   PermissionsAndroid,
@@ -39,6 +40,14 @@ export default function SMSPermissionScreen() {
           PermissionsAndroid.RESULTS.GRANTED;
 
         console.log("SMS Permission Status:", { readGranted, receiveGranted });
+
+        if (readGranted) {
+          // Trigger the initial sync in the background so the user doesn't wait
+          fetchAndSyncSMS(300)
+            .then((res) => console.log("Initial SMS sync result:", res))
+            .catch((err) => console.error("Initial SMS sync failed:", err));
+        }
+
         router.replace("/dashboard");
       } else {
         // Alert on non-Android and wait for user acknowledgment before navigating
