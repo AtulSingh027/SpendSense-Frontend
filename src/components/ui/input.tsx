@@ -29,7 +29,7 @@ export function Input({
           name={iconName}
           size={20}
           color={isFocused ? Colors.primary : Colors.outline}
-          style={styles.icon}
+          style={[styles.icon, props.multiline && { top: 14 }]}
         />
       )}
       {prefix && (
@@ -45,6 +45,7 @@ export function Input({
           rightElement ? { paddingRight: 48 } : {},
           isFocused && styles.inputFocused,
           error && styles.inputError,
+          props.multiline && { textAlignVertical: "top", paddingTop: 14 },
           style,
         ]}
         placeholderTextColor={Colors.outlineVariant}

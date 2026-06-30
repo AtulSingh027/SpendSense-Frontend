@@ -1,0 +1,339 @@
+<!DOCTYPE html><html class="light" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>SpendSense - Transactions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com" rel="preconnect">
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect">
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,100..900;1,100..900&amp;family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&amp;family=JetBrains+Mono:ital,wght@0,100..800;1,100..800&amp;display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet">
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "on-background": "#1b1c1c",
+                        "on-error-container": "#93000a",
+                        "inverse-surface": "#303030",
+                        "tertiary": "#4e2013",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-dim": "#dcd9d9",
+                        "on-secondary-container": "#3f6a67",
+                        "on-primary-fixed": "#00201a",
+                        "on-primary-fixed-variant": "#065043",
+                        "secondary": "#3b6663",
+                        "surface": "#fcf9f8",
+                        "on-tertiary-container": "#e89f8c",
+                        "surface-bright": "#fcf9f8",
+                        "inverse-on-surface": "#f3f0ef",
+                        "on-primary-container": "#7ebdac",
+                        "tertiary-fixed": "#ffdbd1",
+                        "secondary-fixed-dim": "#a2cfcb",
+                        "tertiary-container": "#693527",
+                        "primary-fixed-dim": "#94d3c1",
+                        "on-primary": "#ffffff",
+                        "inverse-primary": "#94d3c1",
+                        "on-secondary": "#ffffff",
+                        "surface-variant": "#e5e2e1",
+                        "surface-container-high": "#eae7e7",
+                        "on-secondary-fixed-variant": "#224e4b",
+                        "surface-container-highest": "#e5e2e1",
+                        "on-surface-variant": "#3f4945",
+                        "secondary-container": "#bbe8e4",
+                        "surface-container-low": "#f6f3f2",
+                        "secondary-fixed": "#beebe7",
+                        "primary": "#00342b",
+                        "error": "#ba1a1a",
+                        "surface-container": "#f0eded",
+                        "error-container": "#ffdad6",
+                        "primary-fixed": "#afefdd",
+                        "on-secondary-fixed": "#00201e",
+                        "outline-variant": "#bfc9c4",
+                        "on-surface": "#1b1c1c",
+                        "on-error": "#ffffff",
+                        "primary-container": "#004d40",
+                        "surface-tint": "#29695b",
+                        "tertiary-fixed-dim": "#ffb5a1",
+                        "outline": "#707975",
+                        "on-tertiary": "#ffffff",
+                        "background": "#fcf9f8",
+                        "on-tertiary-fixed": "#370e04",
+                        "on-tertiary-fixed-variant": "#6d382a"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "spacing": {
+                        "sm": "12px",
+                        "base": "4px",
+                        "md": "16px",
+                        "xl": "32px",
+                        "xs": "8px",
+                        "lg": "24px",
+                        "xxl": "48px",
+                        "container-max": "1200px"
+                    },
+                    "fontFamily": {
+                        "label-sm": ["JetBrains Mono"],
+                        "body-lg": ["Inter"],
+                        "body-md": ["Inter"],
+                        "button": ["Inter"],
+                        "display-currency-mobile": ["Hanken Grotesk"],
+                        "headline-lg": ["Hanken Grotesk"],
+                        "display-currency": ["Hanken Grotesk"],
+                        "headline-md": ["Hanken Grotesk"]
+                    },
+                    "fontSize": {
+                        "label-sm": ["12px", { "lineHeight": "16px", "letterSpacing": "0.02em", "fontWeight": "500" }],
+                        "body-lg": ["16px", { "lineHeight": "24px", "fontWeight": "400" }],
+                        "body-md": ["14px", { "lineHeight": "20px", "fontWeight": "400" }],
+                        "button": ["14px", { "lineHeight": "20px", "letterSpacing": "0.01em", "fontWeight": "600" }],
+                        "display-currency-mobile": ["32px", { "lineHeight": "40px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-lg": ["24px", { "lineHeight": "32px", "fontWeight": "600" }],
+                        "display-currency": ["40px", { "lineHeight": "48px", "letterSpacing": "-0.02em", "fontWeight": "700" }],
+                        "headline-md": ["20px", { "lineHeight": "28px", "fontWeight": "600" }]
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+        body { background-color: #FAFAFA; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        /* UPI Colors mapping to custom tailwind classes isn't ideal here since they are specific brands, 
+           using inline colors or a predefined mapping for the specific request */
+        .bg-gpay { background-color: #e8f0fe; color: #1967d2; }
+        .bg-phonepe { background-color: #f3e8ff; color: #6b21a8; }
+        .bg-paytm { background-color: #e0f2fe; color: #0369a1; }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+</head>
+<body class="bg-background text-on-background font-body-md antialiased min-h-screen pb-24 md:pb-0 flex flex-col md:flex-row relative">
+<!-- TopAppBar (Web & Mobile Hybrid) -->
+<header class="sticky top-0 w-full z-50 bg-surface dark:bg-surface-container flex justify-between items-center px-4 h-16 md:hidden">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-surface-container-high overflow-hidden">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A macro shot of a minimalistic profile avatar illustration, soft lighting, clean lines, corporate but approachable, primarily light grays and soft teal, smooth texture." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBbgxhuC29jtNtAIJrKfYZFRDrSBDuwD_wHPjbWhUXC5ILOHH1LWNpcrVEGexGEyR-rQjLZdO1UdD0JvW6XvGIz0sr6HlMynhorejq5H5s1DUSh8wKVTskRy6GR-NeGDqx7nLn6IF0qgHg4GyZGOfenSPBkNwc6vSfOMgGS0-sJ09ggaZxUAivXwcUBVSY4q8FM4-SRShBECO9KWy-yYOTwOrqyIVg8YUuaUyhVytEK37xv7jVT6T6nyQ">
+</div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed cursor-pointer hover:opacity-80 transition-opacity active:opacity-70">SpendSense</h1>
+</div>
+<button class="w-10 h-10 flex items-center justify-center rounded-full hover:bg-surface-variant transition-colors text-on-surface-variant cursor-pointer active:opacity-70">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 0;">notifications</span>
+</button>
+</header>
+<!-- Side Navigation (Web) -->
+<aside class="hidden md:flex flex-col w-64 bg-surface dark:bg-surface-container border-r border-surface-variant dark:border-outline-variant min-h-screen sticky top-0 h-screen py-6 px-4 shrink-0">
+<div class="mb-8 px-2 flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-on-primary font-bold">
+                S
+            </div>
+<h1 class="font-headline-md text-headline-md font-bold text-primary dark:text-primary-fixed">SpendSense</h1>
+</div>
+<nav class="flex-1 space-y-2">
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-button text-button">Home</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg bg-secondary-container text-on-secondary-container font-bold" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-button text-button">Transactions</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-3 rounded-lg text-on-surface-variant hover:bg-surface-container-high transition-colors" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-button text-button">Settings</span>
+</a>
+</nav>
+<div class="mt-auto px-4 py-4 flex items-center gap-3 border-t border-surface-variant">
+<div class="w-10 h-10 rounded-full bg-surface-container-high overflow-hidden shrink-0">
+<img alt="User Profile" class="w-full h-full object-cover" data-alt="A highly detailed close-up of a professional business avatar on a light pastel background, softly lit to create a friendly and approachable mood, smooth rendering." src="https://lh3.googleusercontent.com/aida-public/AB6AXuBUmH1kBrzdpxf4B4c_e_Otrewrg0FLxEti1xpakJtcI3-KrusM16o-cuOpysaH6-8wfUSGpSl0RpRf54sU_CO-tyg3BKKvnCSws0wBBaJDwvAgAf0wzo_8jHMWs0co4egITex1eaJ6Hg8Tsh44XvTWauZ31MF0285kD53IuUoQ1jbeiOwwzBS6RhSzy4k-QWIlsRtt1QKUQ2mQ5glC47xijKe81UqpKibdlLjHTxq2vn7zOwNU5RSprQ">
+</div>
+<div class="overflow-hidden">
+<p class="font-body-md text-body-md font-semibold text-on-surface truncate">Aarav Sharma</p>
+<p class="font-label-sm text-label-sm text-on-surface-variant truncate">Premium User</p>
+</div>
+</div>
+</aside>
+<!-- Main Content Canvas -->
+<main class="flex-1 w-full max-w-[container-max] mx-auto px-4 py-6 md:py-8 lg:px-8">
+<!-- Header & Search Area -->
+<div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-6"><div class="w-full flex items-center justify-between bg-surface-container-low p-3 rounded-xl border border-outline-variant mb-4 md:order-last md:mb-0 md:w-auto">
+<div class="flex items-center gap-2 text-on-surface-variant">
+<span class="material-symbols-outlined text-body-lg">calendar_today</span>
+<span class="font-body-md">Oct 1 - Oct 24, 2023</span>
+</div>
+<button class="text-primary font-button text-button flex items-center gap-1 hover:opacity-80">
+        Change
+        <span class="material-symbols-outlined text-body-md">expand_more</span>
+</button>
+</div>
+<h2 class="font-headline-lg text-headline-lg text-on-background">Transactions</h2>
+<div class="relative w-full md:w-96">
+<span class="material-symbols-outlined absolute left-4 top-1/2 -translate-y-1/2 text-outline">search</span>
+<input class="w-full h-12 pl-12 pr-4 bg-surface rounded-full border-outline-variant focus:border-primary focus:ring-1 focus:ring-primary font-body-md text-body-md text-on-surface shadow-[0px_2px_8px_rgba(0,0,0,0.02)] transition-shadow hover:shadow-[0px_4px_12px_rgba(0,0,0,0.04)]" placeholder="Search transactions..." type="text">
+</div>
+</div>
+<!-- Filter Chips -->
+<div class="flex overflow-x-auto hide-scrollbar gap-3 mb-8 pb-2"><button class="px-5 py-2 rounded-full bg-primary text-on-primary font-button text-button whitespace-nowrap shadow-sm flex items-center gap-2">All <span class="bg-on-primary text-primary text-[10px] px-1.5 rounded-full">12</span></button><div class="h-8 w-[1px] bg-outline-variant shrink-0 self-center mx-1"></div><button class="px-5 py-2 rounded-full bg-surface text-on-surface-variant font-button text-button whitespace-nowrap border border-outline-variant hover:bg-surface-container-low flex items-center gap-2">Category <span class="material-symbols-outlined text-body-md">keyboard_arrow_down</span></button><button class="px-5 py-2 rounded-full bg-surface text-on-surface-variant font-button text-button whitespace-nowrap border border-outline-variant hover:bg-surface-container-low flex items-center gap-2">Source <span class="material-symbols-outlined text-body-md">keyboard_arrow_down</span></button><button class="px-5 py-2 rounded-full bg-surface text-on-surface-variant font-button text-button whitespace-nowrap border border-outline-variant hover:bg-surface-container-low flex items-center gap-2">App <span class="material-symbols-outlined text-body-md">keyboard_arrow_down</span></button><div class="h-8 w-[1px] bg-outline-variant shrink-0 self-center mx-1"></div><button class="px-4 py-2 text-primary font-button text-button whitespace-nowrap hover:bg-primary-container/20 rounded-lg transition-colors">Clear filters</button></div><div class="flex items-center justify-between bg-secondary-container/30 px-4 py-3 rounded-lg mb-8 border border-secondary-container"><div class="flex items-center gap-4"><div class="flex flex-col"><span class="text-[10px] uppercase tracking-wider text-on-secondary-container font-bold">Filtered Total</span><span class="font-headline-md text-on-secondary-container">₹4,250</span></div><div class="w-[1px] h-8 bg-secondary-container"></div><div class="flex flex-col"><span class="text-[10px] uppercase tracking-wider text-on-secondary-container font-bold">Filtered Count</span><span class="font-headline-md text-on-secondary-container">12 <span class="text-body-md font-normal">Txns</span></span></div></div><div class="flex items-center gap-2 text-on-secondary-container font-label-sm text-[10px] uppercase tracking-widest"><span class="material-symbols-outlined text-body-md">filter_list</span> Showing All</div></div>
+<!-- Transaction List grouped by Date -->
+<div class="space-y-8">
+<!-- Group: Today -->
+<div>
+<h3 class="font-label-sm text-label-sm text-outline uppercase tracking-wider mb-3 px-2">Today, Oct 24</h3>
+<div class="bg-surface rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.03)] border border-[#EEEEEE] overflow-hidden">
+<!-- Row 1 -->
+<div class="flex items-center justify-between p-4 border-b border-[#EEEEEE] hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-secondary-container text-on-secondary-container flex items-center justify-center shrink-0 relative">
+<span class="material-symbols-outlined">restaurant</span>
+<!-- UPI Badge -->
+<div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gpay flex items-center justify-center border-2 border-surface shadow-sm">
+<span class="font-label-sm text-[8px] font-bold">G</span>
+</div>
+</div>
+<div>
+<h4 class="font-body-lg text-body-lg text-on-surface font-medium group-hover:text-primary transition-colors">Starbucks</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-md">Food</span>
+<span class="font-label-sm text-label-sm text-outline">09:42 AM</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-lg text-body-lg text-on-surface font-semibold">-₹450</span>
+</div>
+</div>
+<!-- Row 2 -->
+<div class="flex items-center justify-between p-4 hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-[#f3e8ff] text-[#6b21a8] flex items-center justify-center shrink-0 relative">
+<span class="material-symbols-outlined">local_taxi</span>
+<!-- UPI Badge -->
+<div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-phonepe flex items-center justify-center border-2 border-surface shadow-sm">
+<span class="font-label-sm text-[8px] font-bold">P</span>
+</div>
+</div>
+<div>
+<h4 class="font-body-lg text-body-lg text-on-surface font-medium group-hover:text-primary transition-colors">Uber India</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-md">Travel</span>
+<span class="font-label-sm text-label-sm text-outline">08:15 AM</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-lg text-body-lg text-on-surface font-semibold">-₹320</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Group: Yesterday -->
+<div>
+<h3 class="font-label-sm text-label-sm text-outline uppercase tracking-wider mb-3 px-2">Yesterday, Oct 23</h3>
+<div class="bg-surface rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.03)] border border-[#EEEEEE] overflow-hidden">
+<!-- Row 3 -->
+<div class="flex items-center justify-between p-4 border-b border-[#EEEEEE] hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-[#e0f2fe] text-[#0369a1] flex items-center justify-center shrink-0 relative">
+<span class="material-symbols-outlined">shopping_bag</span>
+<!-- UPI Badge -->
+<div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-paytm flex items-center justify-center border-2 border-surface shadow-sm">
+<span class="font-label-sm text-[8px] font-bold">T</span>
+</div>
+</div>
+<div>
+<h4 class="font-body-lg text-body-lg text-on-surface font-medium group-hover:text-primary transition-colors">Amazon.in</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-md">Shopping</span>
+<span class="font-label-sm text-label-sm text-outline">06:30 PM</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-lg text-body-lg text-on-surface font-semibold">-₹1,299</span>
+</div>
+</div>
+<!-- Row 4 -->
+<div class="flex items-center justify-between p-4 hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-[#e8f5e9] text-[#2e7d32] flex items-center justify-center shrink-0 relative">
+<span class="material-symbols-outlined">payments</span>
+</div>
+<div>
+<h4 class="font-body-lg text-body-lg text-on-surface font-medium group-hover:text-primary transition-colors">Salary Credit</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-md">Income</span>
+<span class="font-label-sm text-label-sm text-outline">10:00 AM</span>
+<span class="font-label-sm text-label-sm text-outline border border-outline-variant px-2 py-0.5 rounded-md">Manual</span></div>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-lg text-body-lg text-[#2e7d32] font-semibold">+₹85,000</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Group: This Week -->
+<div>
+<h3 class="font-label-sm text-label-sm text-outline uppercase tracking-wider mb-3 px-2">This Week</h3>
+<div class="bg-surface rounded-xl shadow-[0px_4px_12px_rgba(0,0,0,0.03)] border border-[#EEEEEE] overflow-hidden">
+<!-- Row 5 -->
+<div class="flex items-center justify-between p-4 hover:bg-surface-container-low transition-colors cursor-pointer group">
+<div class="flex items-center gap-4">
+<div class="w-12 h-12 rounded-full bg-[#fff3e0] text-[#e65100] flex items-center justify-center shrink-0 relative">
+<span class="material-symbols-outlined">bolt</span>
+<!-- UPI Badge -->
+<div class="absolute -bottom-1 -right-1 w-5 h-5 rounded-full bg-gpay flex items-center justify-center border-2 border-surface shadow-sm">
+<span class="font-label-sm text-[8px] font-bold">G</span>
+</div>
+</div>
+<div>
+<h4 class="font-body-lg text-body-lg text-on-surface font-medium group-hover:text-primary transition-colors">Bescom Bill</h4>
+<div class="flex items-center gap-2 mt-1">
+<span class="font-label-sm text-label-sm text-on-surface-variant bg-surface-container px-2 py-0.5 rounded-md">Utilities</span>
+<span class="font-label-sm text-label-sm text-outline">Oct 21</span>
+</div>
+</div>
+</div>
+<div class="text-right">
+<span class="font-body-lg text-body-lg text-on-surface font-semibold">-₹1,850</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom padding for FAB and Nav -->
+<div class="h-24"></div>
+</div>
+</main>
+<!-- Floating Action Button -->
+<button class="fixed right-6 bottom-24 md:bottom-8 w-14 h-14 bg-primary text-on-primary rounded-full shadow-[0px_8px_24px_rgba(0,0,0,0.15)] flex items-center justify-center hover:bg-primary-container transition-colors z-40 hover:scale-105 active:scale-95 duration-200">
+<span class="material-symbols-outlined" style="font-size: 28px;">add</span>
+</button>
+<!-- BottomNavBar (Mobile Only) -->
+<nav class="fixed bottom-0 w-full z-50 flex justify-around items-center px-4 py-2 w-full bg-surface dark:bg-surface-container border-t border-surface-variant dark:border-outline-variant shadow-sm md:hidden">
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors scale-95 active:scale-90 transition-transform p-2 rounded-xl" href="#">
+<span class="material-symbols-outlined">home</span>
+<span class="font-label-sm text-label-sm mt-1">Home</span>
+</a>
+<a class="flex flex-col items-center justify-center bg-secondary-container text-on-secondary-container rounded-full px-5 py-1.5 hover:bg-surface-container-high transition-colors scale-95 active:scale-90 transition-transform" href="#">
+<span class="material-symbols-outlined" style="font-variation-settings: 'FILL' 1;">account_balance_wallet</span>
+<span class="font-label-sm text-label-sm mt-1">Transactions</span>
+</a>
+<a class="flex flex-col items-center justify-center text-on-surface-variant hover:bg-surface-container-high transition-colors scale-95 active:scale-90 transition-transform p-2 rounded-xl" href="#">
+<span class="material-symbols-outlined">settings</span>
+<span class="font-label-sm text-label-sm mt-1">Settings</span>
+</a>
+</nav>
+
+
+</body></html>

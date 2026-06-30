@@ -45,6 +45,8 @@ export default function RootLayout() {
       <Stack.Screen name="(auth)/login" />
       <Stack.Screen name="(auth)/register" />
       <Stack.Screen name="privacy-check" />
+      <Stack.Screen name="sms-permission" />
+      <Stack.Screen name="transaction" />
       <Stack.Screen name="dashboard" />
     </Stack>
   );

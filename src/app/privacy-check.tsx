@@ -17,7 +17,7 @@ export default function PrivacyCheckScreen() {
   const router = useRouter();
 
   const handleContinue = () => {
-    router.replace("/dashboard");
+    router.replace("/sms-permission");
   };
 
   return (
