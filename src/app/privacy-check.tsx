@@ -7,10 +7,10 @@ import { useRouter } from "expo-router";
 import { ScrollView, StyleSheet, View } from "react-native";
 
 const privacyPoints = [
-  "Read only bank transaction SMS",
-  "Detect UPI, card, and bank payments automatically",
-  "Never read personal chats",
-  "Your data is handled securely with 256-bit encryption",
+  "Securely syncs financial SMS to categorize payments",
+  "Detects UPI, credit card, and bank transactions",
+  "Never reads personal chats or contact details",
+  "Your data is encrypted in transit and at rest",
 ];
 
 export default function PrivacyCheckScreen() {
@@ -63,9 +63,7 @@ export default function PrivacyCheckScreen() {
               align="center"
               style={styles.description}
             >
-              SpendSense reads only your bank transaction SMS to automatically
-              detect and categorize your expenses. We do not read personal
-              conversations or messages from chat apps.
+              SpendSense securely syncs and processes your transactional SMS messages on our servers to automatically detect and categorize expenses. We never read, upload, or share personal chats or non-financial messages.
             </Text>
           </View>
 

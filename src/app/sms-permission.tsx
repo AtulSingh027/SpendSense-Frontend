@@ -14,10 +14,14 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  ActivityIndicator,
 } from "react-native";
 
 export default function SMSPermissionScreen() {
   const router = useRouter();
+  const [isSyncing, setIsSyncing] = React.useState(false);
+  const [syncStatus, setSyncStatus] = React.useState<string | null>(null);
+  const [showRestrictedGuide, setShowRestrictedGuide] = React.useState(false);
 
   const handleBack = () => {
     // Go back to the privacy-check page
@@ -27,6 +31,8 @@ export default function SMSPermissionScreen() {
   const handleAllowSMS = async () => {
     try {
       if (Platform.OS === "android") {
+        setIsSyncing(true);
+        setSyncStatus("Requesting permissions...");
         const granted = await PermissionsAndroid.requestMultiple([
           PermissionsAndroid.PERMISSIONS.READ_SMS,
           PermissionsAndroid.PERMISSIONS.RECEIVE_SMS,
@@ -42,13 +48,31 @@ export default function SMSPermissionScreen() {
         console.log("SMS Permission Status:", { readGranted, receiveGranted });
 
         if (readGranted) {
-          // Trigger the initial sync in the background so the user doesn't wait
-          fetchAndSyncSMS(300)
-            .then((res) => console.log("Initial SMS sync result:", res))
-            .catch((err) => console.error("Initial SMS sync failed:", err));
+          setShowRestrictedGuide(false);
+          setSyncStatus("Syncing transaction history...");
+          try {
+            // Trigger bulk ingest API and await the result to ensure it is uploaded immediately
+            const res = await fetchAndSyncSMS(300);
+            console.log("Initial SMS sync result:", res);
+            setSyncStatus("Sync complete!");
+            await new Promise((resolve) => setTimeout(resolve, 800));
+            router.replace("/dashboard");
+          } catch (syncErr) {
+            console.error("Initial SMS sync failed:", syncErr);
+            setSyncStatus("Sync failed. Navigating to dashboard...");
+            await new Promise((resolve) => setTimeout(resolve, 1500));
+            router.replace("/dashboard");
+          }
+        } else {
+          setIsSyncing(false);
+          setSyncStatus(null);
+          setShowRestrictedGuide(true);
+          Alert.alert(
+            "SMS Permission Required",
+            "To automatically track expenses, SpendSense requires permission to read SMS transaction alerts. If the option is greyed out, please enable Restricted Settings.",
+            [{ text: "OK" }]
+          );
         }
-
-        router.replace("/dashboard");
       } else {
         // Alert on non-Android and wait for user acknowledgment before navigating
         Alert.alert(
@@ -59,6 +83,8 @@ export default function SMSPermissionScreen() {
       }
     } catch (err) {
       console.warn("Permission request error:", err);
+      setIsSyncing(false);
+      setSyncStatus(null);
       router.replace("/dashboard");
     }
   };
@@ -67,6 +93,22 @@ export default function SMSPermissionScreen() {
     // Skip for now and go to dashboard
     router.replace("/dashboard");
   };
+
+  if (isSyncing) {
+    return (
+      <Container safe>
+        <View style={styles.syncContainer}>
+          <ActivityIndicator size="large" color={Colors.primary} style={styles.syncSpinner} />
+          <Text variant="headlineMd" color={Colors.onSurface} align="center" style={styles.syncTitle}>
+            {syncStatus || "Syncing..."}
+          </Text>
+          <Text variant="bodyMd" color={Colors.onSurfaceVariant} align="center" style={styles.syncDescription}>
+            We are analyzing your SMS inbox for bank transaction alerts and securely updating your transaction history. This only takes a moment.
+          </Text>
+        </View>
+      </Container>
+    );
+  }
 
   return (
     <Container safe>
@@ -158,6 +200,37 @@ export default function SMSPermissionScreen() {
               </Text>
             </TouchableOpacity>
           </View>
+
+          {showRestrictedGuide && (
+            <View style={styles.restrictedCard}>
+              <View style={styles.restrictedHeaderRow}>
+                <MaterialIcons name="error-outline" size={20} color="#D93025" />
+                <Text variant="labelSm" color="#D93025" style={styles.restrictedHeader}>
+                  HOW TO ALLOW RESTRICTED SETTINGS
+                </Text>
+              </View>
+              <Text variant="bodyMd" color={Colors.onSurfaceVariant} style={styles.restrictedBody}>
+                If Android has disabled this setting for security (sideloaded app):
+              </Text>
+              <View style={styles.stepList}>
+                <Text variant="bodyMd" color={Colors.onSurfaceVariant} style={styles.stepText}>
+                  1. Long press the <Text style={styles.boldText}>SpendSense</Text> icon on your home screen and tap <Text style={styles.boldText}>App Info</Text> (or go to Settings &gt; Apps &gt; SpendSense).
+                </Text>
+                <Text variant="bodyMd" color={Colors.onSurfaceVariant} style={styles.stepText}>
+                  2. Tap the <Text style={styles.boldText}>3-dot menu</Text> in the top-right corner.
+                </Text>
+                <Text variant="bodyMd" color={Colors.onSurfaceVariant} style={styles.stepText}>
+                  3. Select <Text style={styles.boldText}>"Allow restricted settings"</Text> and verify your identity.
+                </Text>
+                <Text variant="bodyMd" color={Colors.onSurfaceVariant} style={styles.stepText}>
+                  4. Tap <Text style={styles.boldText}>Permissions &gt; SMS</Text> and set it to <Text style={styles.boldText}>"Allow"</Text>.
+                </Text>
+                <Text variant="bodyMd" color={Colors.onSurfaceVariant} style={styles.stepText}>
+                  5. Re-open SpendSense and tap Allow again.
+                </Text>
+              </View>
+            </View>
+          )}
         </View>
       </ScrollView>
     </Container>
@@ -299,5 +372,56 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     borderRadius: Rounded.lg,
+  },
+  syncContainer: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: Spacing.xl,
+    backgroundColor: Colors.background,
+  },
+  syncSpinner: {
+    marginBottom: Spacing.lg,
+  },
+  syncTitle: {
+    fontWeight: "700",
+    marginBottom: Spacing.sm,
+  },
+  syncDescription: {
+    lineHeight: 22,
+    maxWidth: 320,
+  },
+  restrictedCard: {
+    backgroundColor: "#FDF2F2",
+    borderRadius: Rounded.md,
+    borderWidth: 1,
+    borderColor: "#F5C2C2",
+    padding: Spacing.md,
+    marginTop: Spacing.lg,
+    width: "100%",
+    maxWidth: 420,
+  },
+  restrictedHeaderRow: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: Spacing.xs,
+    marginBottom: Spacing.xs,
+  },
+  restrictedHeader: {
+    fontWeight: "600",
+    letterSpacing: 1.1,
+  },
+  restrictedBody: {
+    marginBottom: Spacing.sm,
+    lineHeight: 20,
+  },
+  stepList: {
+    gap: Spacing.xs,
+  },
+  stepText: {
+    lineHeight: 20,
+  },
+  boldText: {
+    fontWeight: "700",
   },
 });

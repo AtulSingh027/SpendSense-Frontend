@@ -56,7 +56,16 @@ export function isTransactionalSMS(sender: string, body: string): boolean {
   if (isPersonalSender(sender)) return false;
 
   const lowerBody = body.toLowerCase();
-  return TRANSACTIONAL_KEYWORDS.some((keyword) => lowerBody.includes(keyword));
+
+  // 1. Check if the message contains an amount pattern (e.g. Rs 500, Rs. 1,000, INR 150.50)
+  const hasAmount = /(?:Rs\.?|INR)\s?([\d,]+\.?\d*)/i.test(body);
+  if (!hasAmount) return false;
+
+  // 2. Check if the message contains transaction indicators matching backend parsers
+  // These include: debited, credited, debit, credit, Dr, Cr, spent, withdrawn
+  const hasTxnIndicator = /(debited|credited|debit|credit|\bdr\b|\bcr\b|spent|withdrawn)/i.test(lowerBody);
+  
+  return hasTxnIndicator;
 }
 
 export async function fetchAndSyncSMS(maxCount: number = 300): Promise<{
