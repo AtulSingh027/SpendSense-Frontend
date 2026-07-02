@@ -13,6 +13,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 
 export default function RegisterScreen() {
@@ -80,13 +81,13 @@ export default function RegisterScreen() {
         <TouchableOpacity style={styles.backButton} onPress={handleBack}>
           <MaterialIcons name="arrow-back" size={24} color={Colors.primary} />
         </TouchableOpacity>
-        <Text
-          variant="headlineMd"
-          color={Colors.primary}
-          style={styles.headerTitle}
-        >
-          SpendSense
-        </Text>
+        <View style={styles.logoContainer}>
+          <Image
+            source={require("@/assets/wordmark.png")}
+            style={styles.logo}
+            resizeMode="contain"
+          />
+        </View>
       </View>
 
       <ScrollView
@@ -274,9 +275,14 @@ const styles = StyleSheet.create({
   backButton: {
     marginRight: Spacing.sm,
   },
-  headerTitle: {
-    fontWeight: "700",
-    letterSpacing: -0.5,
+  logoContainer: {
+    flex: 1,
+    alignItems: "center",
+    marginRight: 36,
+  },
+  logo: {
+    width: 100,
+    height: 24,
   },
   scrollContent: {
     flexGrow: 1,

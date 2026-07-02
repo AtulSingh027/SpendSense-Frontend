@@ -1,10 +1,10 @@
 import { Stack } from "expo-router";
 
-export default function TransactionLayout() {
+export default function CategoriesLayout() {
   return (
     <Stack screenOptions={{ headerShown: false }}>
-      <Stack.Screen name="add-expense" />
-      <Stack.Screen name="transactions" />
+      <Stack.Screen name="index" />
+      <Stack.Screen name="add-categories" />
       <Stack.Screen name="[id]" />
     </Stack>
   );

@@ -19,6 +19,7 @@ import { fetchTransactions, type TransactionResponse } from "@/lib/transaction";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter, useFocusEffect } from "expo-router";
 import React, { useCallback, useEffect, useState } from "react";
+import { AppHeader } from "@/components/ui/app-header";
 import {
   ActivityIndicator,
   RefreshControl,
@@ -27,6 +28,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   View,
+  Image,
 } from "react-native";
 
 // ─── Helpers ────────────────────────────────────────────────────────────────
@@ -246,15 +248,7 @@ export default function DashboardHomeScreen() {
   return (
     <Container safe>
       {/* Header */}
-      <View style={styles.header}>
-        <View style={styles.avatarPlaceholder}>
-          <MaterialIcons name="person" size={20} color={Colors.onPrimary} />
-        </View>
-        <Text variant="headlineMd" color={Colors.primary} style={styles.brandTitle}>
-          SpendSense
-        </Text>
-        <MaterialIcons name="notifications-none" size={24} color={Colors.onSurfaceVariant} />
-      </View>
+      <AppHeader />
 
       <ScrollView
         contentContainerStyle={styles.scrollContent}
@@ -695,9 +689,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  brandTitle: {
-    fontFamily: "HankenGrotesk_700Bold",
-    fontWeight: "700",
+  logoContainer: {
+    flex: 1,
+    alignItems: "center",
+  },
+  logo: {
+    width: 120,
+    height: 28,
   },
   scrollContent: {
     paddingHorizontal: Spacing.md,

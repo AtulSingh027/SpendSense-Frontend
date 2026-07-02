@@ -1,9 +1,10 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { Text } from "@/components/ui/text";
 import { Colors } from "@/constants/theme";
 import { type TransactionResponse } from "@/lib/transaction";
+import { useRouter } from "expo-router";
 import {
   formatCurrency,
   getCategoryColor,
@@ -18,6 +19,7 @@ interface TransactionItemProps {
 }
 
 export function TransactionItem({ item, isLast }: TransactionItemProps) {
+  const router = useRouter();
   const catColor = getCategoryColor(item.category_name || "");
   const iconName = getCategoryIcon(item.category_name);
   const isDebit = item.txn_type === "debit";
@@ -38,7 +40,11 @@ export function TransactionItem({ item, isLast }: TransactionItemProps) {
     "Transaction";
 
   return (
-    <View style={[styles.txnRow, !isLast && styles.txnRowBorder]}>
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={() => router.push(`/transaction/${item.id}`)}
+      style={[styles.txnRow, !isLast && styles.txnRowBorder]}
+    >
       <View style={styles.txnLeft}>
         {/* Icon Wrapper */}
         <View style={[styles.categoryCircle, { backgroundColor: catColor.bg }]}>
@@ -101,7 +107,7 @@ export function TransactionItem({ item, isLast }: TransactionItemProps) {
           {formatCurrency(item.amount)}
         </Text>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 }
 

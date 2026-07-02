@@ -1,7 +1,7 @@
 import { Stack } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
-import { useEffect } from "react";
-import { Platform } from "react-native";
+import { useEffect, useRef } from "react";
+import { Platform, AppState } from "react-native";
 import { useFonts } from "expo-font";
 import {
   HankenGrotesk_400Regular,
@@ -17,7 +17,7 @@ import {
 } from "@expo-google-fonts/jetbrains-mono";
 
 import { startReadSMS, stopReadSMS } from "@maniac-tech/react-native-expo-read-sms";
-import { isTransactionalSMS } from "@/lib/sms";
+import { isTransactionalSMS, fetchAndSyncSMS } from "@/lib/sms";
 import { apiClient } from "@/lib/api";
 
 // Prevent the splash screen from auto-hiding before asset loading is complete.
@@ -38,6 +38,37 @@ export default function RootLayout() {
       SplashScreen.hideAsync();
     }
   }, [loaded, error]);
+
+  // Catch-up SMS sync on app open/foregrounding with 5-minute interval guard
+  const lastAttemptRef = useRef(0);
+  const MIN_SYNC_INTERVAL_MS = 5 * 60 * 1000;
+
+  useEffect(() => {
+    const trySync = () => {
+      const now = Date.now();
+      if (now - lastAttemptRef.current < MIN_SYNC_INTERVAL_MS) return;
+      lastAttemptRef.current = now;
+      fetchAndSyncSMS()
+        .then((res) => {
+          if (res) {
+            console.log("Background sync complete:", res);
+          }
+        })
+        .catch((err) => console.warn("Background sync failed:", err));
+    };
+
+    trySync(); // Cold start sync
+
+    const subscription = AppState.addEventListener("change", (state) => {
+      if (state === "active") {
+        trySync();
+      }
+    });
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
 
   // Real-time SMS Listener for Android
   useEffect(() => {
@@ -94,6 +125,7 @@ export default function RootLayout() {
       <Stack.Screen name="sms-permission" />
       <Stack.Screen name="transaction" />
       <Stack.Screen name="dashboard" />
+      <Stack.Screen name="categories" />
     </Stack>
   );
 }

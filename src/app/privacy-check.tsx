@@ -4,7 +4,7 @@ import { Text } from "@/components/ui/text";
 import { Colors, Rounded, Spacing } from "@/constants/theme";
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRouter } from "expo-router";
-import { ScrollView, StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View, Image } from "react-native";
 
 const privacyPoints = [
   "Securely syncs financial SMS to categorize payments",
@@ -30,9 +30,13 @@ export default function PrivacyCheckScreen() {
           <View style={styles.headerIcon}>
             <MaterialIcons name="arrow-back" size={22} color={Colors.primary} />
           </View>
-          <Text variant="bodyMd" color={Colors.primary} style={styles.brandText}>
-            SpendSense
-          </Text>
+          <View style={styles.logoContainer}>
+            <Image
+              source={require("@/assets/wordmark.png")}
+              style={styles.logo}
+              resizeMode="contain"
+            />
+          </View>
         </View>
 
         <View style={styles.content}>
@@ -109,7 +113,6 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     alignItems: "center",
-    gap: Spacing.xs,
     paddingVertical: Spacing.sm,
   },
   headerIcon: {
@@ -118,9 +121,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  brandText: {
-    fontFamily: "HankenGrotesk_700Bold",
-    fontWeight: "700",
+  logoContainer: {
+    flex: 1,
+    alignItems: "center",
+    marginRight: 32,
+  },
+  logo: {
+    width: 100,
+    height: 24,
   },
   content: {
     flex: 1,

@@ -39,3 +39,46 @@ export async function deleteToken(): Promise<void> {
     await SecureStore.deleteItemAsync(TOKEN_KEY);
   }
 }
+
+export async function getCurrentUserId(): Promise<number | null> {
+  try {
+    const token = await getToken();
+    if (!token) return null;
+    
+    const parts = token.split('.');
+    if (parts.length !== 3) {
+      console.warn("Token is not in JWT format");
+      return null;
+    }
+    
+    const base64Url = parts[1];
+    const base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');
+    
+    // Add base64 padding
+    let paddedBase64 = base64;
+    while (paddedBase64.length % 4) {
+      paddedBase64 += '=';
+    }
+
+    // Safe base64 decoding
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+    let str = paddedBase64.replace(/=+$/, '');
+    let binaryString = '';
+    for (let bc = 0, bs = 0, buffer, i = 0; buffer = str.charAt(i++); ~buffer && (bs = bc % 4 ? bs * 64 + buffer : buffer, bc++ % 4) ? binaryString += String.fromCharCode(255 & bs >> (-2 * bc & 6)) : 0) {
+      buffer = chars.indexOf(buffer);
+    }
+
+    // Convert binary string to UTF-8
+    const percentEncoded = binaryString.split('').map((c) => {
+      return '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2);
+    }).join('');
+    
+    const utf8String = decodeURIComponent(percentEncoded);
+    const payload = JSON.parse(utf8String);
+    return payload.user_id ? Number(payload.user_id) : null;
+  } catch (error) {
+    console.error("Failed to decode token:", error);
+    return null;
+  }
+}
+

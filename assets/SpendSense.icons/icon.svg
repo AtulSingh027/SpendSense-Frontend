@@ -1,0 +1,33 @@
+<svg viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#125446"/>
+      <stop offset="100%" stop-color="#0A2E25"/>
+    </linearGradient>
+  </defs>
+
+  <!-- App icon background, iOS-style squircle -->
+  <rect x="0" y="0" width="1024" height="1024" rx="224" fill="url(#bg)"/>
+
+  <!-- Monogram: flowing "S" ribbon — reads as both the brand initial
+       and a spend/trend curve. Symmetric around center (512,512). -->
+  <path d="
+      M 632 312
+      C 632 244, 566 206, 494 206
+      C 412 206, 352 250, 352 322
+      C 352 396, 420 420, 496 444
+      C 512 449, 512 449, 528 454
+      C 604 478, 672 502, 672 576
+      C 672 648, 612 692, 530 692
+      C 458 692, 392 654, 392 586
+    "
+    fill="none"
+    stroke="#F4EFE6"
+    stroke-width="84"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  />
+
+  <!-- Pulse / sense accent dot: reads as a notification / detection ping -->
+  <circle cx="646" cy="278" r="48" fill="#3DDC97"/>
+</svg>

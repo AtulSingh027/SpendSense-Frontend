@@ -49,7 +49,7 @@ function getCategoryIconName(name: string): keyof typeof MaterialIcons.glyphMap 
 }
 
 const UPI_APPS = [
-  { name: "PhonePe", color: "#5f259f", icon: "account-balance-wallet" as const },
+  { name: "PhonePe", color: "#5f259f", icon: "payment" as const },
   { name: "GPay", color: "#1a73e8", icon: "payments" as const },
   { name: "Paytm", color: "#00baf2", icon: "qr-code-2" as const },
   { name: "Other", color: "#3f4945", icon: "more-horiz" as const },

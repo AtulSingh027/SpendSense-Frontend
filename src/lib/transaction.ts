@@ -17,6 +17,7 @@ export interface TransactionResponse {
   bank_ref_id: string | null;
   txn_timestamp: string;
   notes: string | null;
+  sms_raw_text?: string | null;
   created_at: string;
   updated_at: string;
 }
@@ -64,5 +65,40 @@ export async function createTransaction(
   payload: CreateTransactionPayload
 ): Promise<TransactionResponse> {
   const { data } = await apiClient.post<TransactionResponse>("/transaction/", payload);
+  return data;
+}
+
+export async function fetchTransactionById(id: number): Promise<TransactionResponse> {
+  const { data } = await apiClient.get<TransactionResponse>(`/transaction/${id}`);
+  return data;
+}
+
+export interface UpdateTransactionPayload {
+  amount?: number;
+  txn_type?: "debit" | "credit";
+  merchant_raw?: string | null;
+  category_id?: number | null;
+  upi_app?: string | null;
+  source?: "manual" | "sms";
+  txn_timestamp?: string;
+  notes?: string | null;
+}
+
+export async function updateTransaction(
+  id: number,
+  payload: UpdateTransactionPayload
+): Promise<TransactionResponse> {
+  const { data } = await apiClient.patch<TransactionResponse>(`/transaction/${id}`, payload);
+  return data;
+}
+
+export interface DeleteTransactionResponse {
+  success: boolean;
+  message: string;
+  transaction_id: number;
+}
+
+export async function deleteTransaction(id: number): Promise<DeleteTransactionResponse> {
+  const { data } = await apiClient.delete<DeleteTransactionResponse>(`/transaction/${id}`);
   return data;
 }

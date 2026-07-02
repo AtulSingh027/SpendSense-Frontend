@@ -52,7 +52,7 @@ export default function DashboardLayout() {
           tabBarIcon: ({ color, focused }) => (
             <View style={[styles.iconContainer, focused && styles.iconContainerActive]}>
               <MaterialIcons
-                name="account-balance-wallet"
+                name="receipt-long"
                 size={24}
                 color={focused ? Colors.primary : Colors.onSurfaceVariant}
               />

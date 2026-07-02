@@ -204,13 +204,13 @@ export function TransactionFilters({
             onPress={handleClearFilters}
             style={[
               styles.filterChip,
-              !selectedCategory && !selectedSource && styles.filterChipActive,
+              !selectedCategory && !selectedSource && !selectedApp && styles.filterChipActive,
             ]}
           >
             <Text
               style={[
                 styles.filterChipText,
-                !selectedCategory && !selectedSource && styles.filterChipTextActive,
+                !selectedCategory && !selectedSource && !selectedApp && styles.filterChipTextActive,
               ]}
             >
               All
@@ -218,7 +218,7 @@ export function TransactionFilters({
             <View
               style={[
                 styles.filterCountBadge,
-                !selectedCategory && !selectedSource
+                !selectedCategory && !selectedSource && !selectedApp
                   ? styles.filterCountBadgeActive
                   : styles.filterCountBadgeInactive,
               ]}
@@ -226,7 +226,7 @@ export function TransactionFilters({
               <Text
                 style={[
                   styles.filterCountText,
-                  !selectedCategory && !selectedSource
+                  !selectedCategory && !selectedSource && !selectedApp
                     ? styles.filterCountTextActive
                     : styles.filterCountTextInactive,
                 ]}
@@ -270,12 +270,34 @@ export function TransactionFilters({
             />
           </TouchableOpacity>
 
-
+          {/* APP CHIP */}
+          <TouchableOpacity
+            activeOpacity={0.8}
+            onPress={() => setActiveFilterType(activeFilterType === "app" ? null : "app")}
+            style={[styles.filterChip, selectedApp !== null && styles.filterChipHighlight]}
+          >
+            <Text style={[styles.filterChipText, selectedApp !== null && styles.filterChipTextHighlight]}>
+              {selectedApp
+                ? (selectedApp === "googlepay"
+                    ? "GPay"
+                    : selectedApp === "phonepe"
+                    ? "PhonePe"
+                    : selectedApp === "paytm"
+                    ? "Paytm"
+                    : "Unknown")
+                : "App"}
+            </Text>
+            <MaterialIcons
+              name="keyboard-arrow-down"
+              size={16}
+              color={selectedApp ? Colors.onPrimary : Colors.onSurfaceVariant}
+            />
+          </TouchableOpacity>
 
           <View style={styles.dividerLine} />
 
           {/* CLEAR ALL ACTIONS */}
-          {(selectedCategory !== null || selectedSource !== null || searchQuery !== "") && (
+          {(selectedCategory !== null || selectedSource !== null || selectedApp !== null || searchQuery !== "") && (
             <TouchableOpacity onPress={handleClearFilters} style={styles.clearChip}>
               <Text style={styles.clearChipText}>Clear filters</Text>
             </TouchableOpacity>
@@ -325,6 +347,30 @@ export function TransactionFilters({
                       style={[styles.subFilterPillText, isSelected && styles.subFilterPillTextActive]}
                     >
                       {label}
+                    </Text>
+                  </TouchableOpacity>
+                );
+              })}
+
+            {/* APP PICKER */}
+            {activeFilterType === "app" &&
+              ([
+                { id: "googlepay", label: "GPay" },
+                { id: "phonepe", label: "PhonePe" },
+                { id: "paytm", label: "Paytm" },
+                { id: "unknown", label: "Unknown/Other" },
+              ] as const).map((appOption) => {
+                const isSelected = selectedApp === appOption.id;
+                return (
+                  <TouchableOpacity
+                    key={appOption.id}
+                    onPress={() => setSelectedApp(isSelected ? null : appOption.id)}
+                    style={[styles.subFilterPill, isSelected && styles.subFilterPillActive]}
+                  >
+                    <Text
+                      style={[styles.subFilterPillText, isSelected && styles.subFilterPillTextActive]}
+                    >
+                      {appOption.label}
                     </Text>
                   </TouchableOpacity>
                 );

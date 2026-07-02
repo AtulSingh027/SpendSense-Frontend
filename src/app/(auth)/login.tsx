@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, ScrollView, Alert, TouchableOpacity } from "react-native";
+import { View, StyleSheet, ScrollView, Alert, TouchableOpacity, Image } from "react-native";
 import { useRouter } from "expo-router";
 import { MaterialIcons, AntDesign } from "@expo/vector-icons";
 import { Container } from "@/components/ui/container";
@@ -90,12 +90,11 @@ export default function LoginScreen() {
         <View style={styles.formWrapper}>
           {/* Brand Header Logo Block */}
           <View style={styles.brandContainer}>
-            <View style={styles.logoBox}>
-              <MaterialIcons name="account-balance-wallet" size={26} color="#ffffff" />
-            </View>
-            <Text color={Colors.primary} style={styles.brandText}>
-              SpendSense
-            </Text>
+            <Image
+              source={require("@/assets/wordmark.png")}
+              style={styles.logo}
+              resizeMode="contain"
+            />
           </View>
 
 
@@ -242,25 +241,13 @@ const styles = StyleSheet.create({
     paddingTop: Spacing.lg,
   },
   brandContainer: {
-    flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
     marginBottom: Spacing.xl,
   },
-  logoBox: {
-    width: 48,
-    height: 48,
-    backgroundColor: Colors.primary,
-    borderRadius: 12,
-    justifyContent: "center",
-    alignItems: "center",
-    marginRight: Spacing.sm,
-  },
-  brandText: {
-    fontWeight: "700",
-    fontFamily: "HankenGrotesk_700Bold",
-    fontSize: 34,
-    letterSpacing: -1,
+  logo: {
+    width: 200,
+    height: 52,
   },
   titleContainer: {
     marginBottom: Spacing.xl,
